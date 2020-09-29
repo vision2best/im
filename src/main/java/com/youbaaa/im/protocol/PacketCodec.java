@@ -3,8 +3,8 @@
  */
 package com.youbaaa.im.protocol;
 
-import com.youbaaa.im.protocol.request.LoginRequestPacket;
-import com.youbaaa.im.protocol.response.LoginResponsePacket;
+import com.youbaaa.im.protocol.request.*;
+import com.youbaaa.im.protocol.response.*;
 import com.youbaaa.im.serializer.Serializer;
 import com.youbaaa.im.serializer.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
@@ -12,8 +12,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.youbaaa.im.protocol.command.Command.LOGIN_REQUEST;
-import static com.youbaaa.im.protocol.command.Command.LOGIN_RESPONSE;
+import static com.youbaaa.im.protocol.command.Command.*;
 
 /**
  * <pre>
@@ -48,9 +47,27 @@ public class PacketCodec {
 
     private PacketCodec() {
         packetTypeMap = new HashMap<>();
+        serializerMap = new HashMap<>();
+
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
-        serializerMap = new HashMap<>();
+        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetTypeMap.put(QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetTypeMap.put(QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        packetTypeMap.put(LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        packetTypeMap.put(LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
+        packetTypeMap.put(GROUP_MESSAGE_REQUEST, GroupMessageRequestPacket.class);
+        packetTypeMap.put(GROUP_MESSAGE_RESPONSE, GroupMessageResponsePacket.class);
+        packetTypeMap.put(HEARTBEAT_REQUEST, HeartBeatRequestPacket.class);
+        packetTypeMap.put(HEARTBEAT_RESPONSE, HeartBeatResponsePacket.class);
+
         Serializer serializer = new JSONSerializer();
         serializerMap.put(serializer.getSerializerAlgorithmEnum(), serializer);
     }

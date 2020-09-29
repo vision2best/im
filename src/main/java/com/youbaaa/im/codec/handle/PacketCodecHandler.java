@@ -6,6 +6,7 @@ package com.youbaaa.im.codec.handle;
 import com.youbaaa.im.protocol.Packet;
 import com.youbaaa.im.protocol.PacketCodec;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author huang.zhangh
  * @version PacketCodecHandler.java, v 0.1 2020-09-29 09:56
  */
+@ChannelHandler.Sharable
 public class PacketCodecHandler extends MessageToMessageCodec<ByteBuf, Packet> {
     public static final PacketCodecHandler INSTANCE = new PacketCodecHandler();
 

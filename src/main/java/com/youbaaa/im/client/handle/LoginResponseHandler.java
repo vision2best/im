@@ -14,7 +14,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @author huang.zhangh
  * @version LoginResponseHandler.java, v 0.1 2020-09-29 10:05
  */
-@ChannelHandler.Sharable
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket msg) throws Exception {

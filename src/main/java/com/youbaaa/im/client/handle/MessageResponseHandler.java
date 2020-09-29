@@ -14,12 +14,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
  */
 @ChannelHandler.Sharable
 public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageResponsePacket> {
-    public static final MessageResponseHandler INSTANCE = new MessageResponseHandler();
-
-    private MessageResponseHandler() {
-
-    }
-
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageResponsePacket msg) throws Exception {
 

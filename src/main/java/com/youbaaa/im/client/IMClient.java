@@ -5,12 +5,11 @@ package com.youbaaa.im.client;
 
 import com.youbaaa.im.client.console.ConsoleCommandManager;
 import com.youbaaa.im.client.console.LoginConsoleCommand;
-import com.youbaaa.im.client.handle.LoginResponseHandler;
+import com.youbaaa.im.client.handle.*;
 import com.youbaaa.im.codec.PacketDecoder;
 import com.youbaaa.im.codec.PacketEncoder;
 import com.youbaaa.im.codec.handle.Spliter;
 import com.youbaaa.im.handle.IMIdleStateHandler;
-import com.youbaaa.im.protocol.request.LoginRequestPacket;
 import com.youbaaa.im.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -51,9 +50,26 @@ public class IMClient {
 
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
-
+                        // 登录响应处理器
                         ch.pipeline().addLast(new LoginResponseHandler());
+                        // 收消息处理器
+                        ch.pipeline().addLast(new MessageResponseHandler());
+                        // 创建群响应处理器
+                        ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        // 加群响应处理器
+                        ch.pipeline().addLast(new JoinGroupResponseHandler());
+                        // 退群响应处理器
+                        ch.pipeline().addLast(new QuitGroupResponseHandler());
+                        // 获取群成员响应处理器
+                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
+                        // 群消息响应
+                        ch.pipeline().addLast(new GroupMessageResponseHandler());
+                        // 登出响应处理器
+                        ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
+
+                        // 心跳定时器
+                        ch.pipeline().addLast(new HeartBeatTimerHandler());
                     }
                 });
         connect(bootstrap, HOST, PORT, MAX_RETRY);
