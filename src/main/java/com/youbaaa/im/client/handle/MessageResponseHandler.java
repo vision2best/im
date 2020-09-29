@@ -1,0 +1,27 @@
+/*
+ * Copyright (C) 2013-2020 All Rights Reserved.
+ */
+package com.youbaaa.im.client.handle;
+
+import com.youbaaa.im.protocol.response.MessageResponsePacket;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+
+/**
+ * @author huang.zhangh
+ * @version MessageResponseHandler.java, v 0.1 2020-09-29 13:49
+ */
+@ChannelHandler.Sharable
+public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageResponsePacket> {
+    public static final MessageResponseHandler INSTANCE = new MessageResponseHandler();
+
+    private MessageResponseHandler() {
+
+    }
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, MessageResponsePacket msg) throws Exception {
+
+    }
+}

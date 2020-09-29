@@ -3,7 +3,11 @@
  */
 package com.youbaaa.im.server;
 
+import com.youbaaa.im.codec.handle.PacketCodecHandler;
+import com.youbaaa.im.codec.handle.Spliter;
 import com.youbaaa.im.handle.IMIdleStateHandler;
+import com.youbaaa.im.server.handle.AuthHandler;
+import com.youbaaa.im.server.handle.LoginRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -35,6 +39,10 @@ public class IMServer {
                     protected void initChannel(NioSocketChannel ch) {
                         //心跳检测
                         ch.pipeline().addLast(new IMIdleStateHandler());
+                        ch.pipeline().addLast(new Spliter());
+                        ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
+                        ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(AuthHandler.INSTANCE);
                     }
                 });
         bind(bootstrap);

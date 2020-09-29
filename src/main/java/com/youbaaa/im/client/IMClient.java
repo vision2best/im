@@ -3,8 +3,18 @@
  */
 package com.youbaaa.im.client;
 
+import com.youbaaa.im.client.console.ConsoleCommandManager;
+import com.youbaaa.im.client.console.LoginConsoleCommand;
+import com.youbaaa.im.client.handle.LoginResponseHandler;
+import com.youbaaa.im.codec.PacketDecoder;
+import com.youbaaa.im.codec.PacketEncoder;
+import com.youbaaa.im.codec.handle.Spliter;
 import com.youbaaa.im.handle.IMIdleStateHandler;
+import com.youbaaa.im.protocol.request.LoginRequestPacket;
+import com.youbaaa.im.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -12,6 +22,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.Date;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,6 +48,12 @@ public class IMClient {
                     protected void initChannel(SocketChannel ch) {
                         //心跳检测
                         ch.pipeline().addLast(new IMIdleStateHandler());
+
+                        ch.pipeline().addLast(new Spliter());
+                        ch.pipeline().addLast(new PacketDecoder());
+
+                        ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
         connect(bootstrap, HOST, PORT, MAX_RETRY);
@@ -46,6 +63,8 @@ public class IMClient {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
                 System.out.println(new Date() + "««««IM客户端连接成功!");
+                Channel channel = ((ChannelFuture) future).channel();
+                startConsoleThread(channel);
             } else if (retry == 0) {
                 System.out.println(new Date() + "««««IM客户端重试连接次数已用完，连接失败!");
             } else {
@@ -58,5 +77,21 @@ public class IMClient {
                         .SECONDS);
             }
         });
+    }
+
+    private static void startConsoleThread(Channel channel) {
+        ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+        LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
+        Scanner scanner = new Scanner(System.in);
+
+        new Thread(() -> {
+            while (!Thread.interrupted()) {
+                if (!SessionUtil.hasLogin(channel)) {
+                    loginConsoleCommand.exec(scanner, channel);
+                } else {
+                    consoleCommandManager.exec(scanner, channel);
+                }
+            }
+        }).start();
     }
 }

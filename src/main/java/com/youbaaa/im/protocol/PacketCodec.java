@@ -3,11 +3,17 @@
  */
 package com.youbaaa.im.protocol;
 
+import com.youbaaa.im.protocol.request.LoginRequestPacket;
+import com.youbaaa.im.protocol.response.LoginResponsePacket;
 import com.youbaaa.im.serializer.Serializer;
+import com.youbaaa.im.serializer.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.youbaaa.im.protocol.command.Command.LOGIN_REQUEST;
+import static com.youbaaa.im.protocol.command.Command.LOGIN_RESPONSE;
 
 /**
  * <pre>
@@ -42,7 +48,11 @@ public class PacketCodec {
 
     private PacketCodec() {
         packetTypeMap = new HashMap<>();
+        packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
         serializerMap = new HashMap<>();
+        Serializer serializer = new JSONSerializer();
+        serializerMap.put(serializer.getSerializerAlgorithmEnum(), serializer);
     }
 
     public void encode(ByteBuf byteBuf, Packet packet) {
