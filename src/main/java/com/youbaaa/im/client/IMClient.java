@@ -3,6 +3,7 @@
  */
 package com.youbaaa.im.client;
 
+import com.youbaaa.im.handle.IMIdleStateHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -34,7 +35,8 @@ public class IMClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast();
+                        //心跳检测
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                     }
                 });
         connect(bootstrap, HOST, PORT, MAX_RETRY);
@@ -43,15 +45,15 @@ public class IMClient {
     private static void connect(Bootstrap bootstrap, String host, int port, int retry) {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
-                System.out.println(new Date() + "««««IM服务端连接成功!");
+                System.out.println(new Date() + "««««IM客户端连接成功!");
             } else if (retry == 0) {
-                System.out.println(new Date() + "««««IM服务端重试连接次数已用完，连接失败!");
+                System.out.println(new Date() + "««««IM客户端重试连接次数已用完，连接失败!");
             } else {
                 // 第几次重连
                 int order = (MAX_RETRY - retry) + 1;
                 // 本次重连的间隔
                 int delay = 1 << order;
-                System.err.println(new Date() + "««««连接失败，第" + order + "次重连……请耐心等候!");
+                System.err.println(new Date() + "««««IM客户端连接失败，第" + order + "次重连……请耐心等候!");
                 bootstrap.config().group().schedule(() -> connect(bootstrap, host, port, retry - 1), delay, TimeUnit
                         .SECONDS);
             }

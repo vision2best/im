@@ -3,6 +3,7 @@
  */
 package com.youbaaa.im.server;
 
+import com.youbaaa.im.handle.IMIdleStateHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -32,7 +33,8 @@ public class IMServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
-                        ch.pipeline().addLast();
+                        //心跳检测
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                     }
                 });
         bind(bootstrap);
