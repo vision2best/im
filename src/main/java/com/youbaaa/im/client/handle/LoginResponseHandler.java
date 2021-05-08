@@ -6,7 +6,6 @@ package com.youbaaa.im.client.handle;
 import com.youbaaa.im.protocol.response.LoginResponsePacket;
 import com.youbaaa.im.session.Session;
 import com.youbaaa.im.util.SessionUtil;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

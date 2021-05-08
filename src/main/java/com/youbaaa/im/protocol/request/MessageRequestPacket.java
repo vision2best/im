@@ -16,10 +16,19 @@ import static com.youbaaa.im.protocol.command.Command.MESSAGE_REQUEST;
 public class MessageRequestPacket extends Packet {
     private String toUserId;
     private String message;
+    private String fromUserId;
+    private String fromUserName;
 
     public MessageRequestPacket(String toUserId, String message) {
         this.toUserId = toUserId;
         this.message = message;
+    }
+
+    public MessageRequestPacket(String toUserId, String message, String fromUserId, String fromUserName) {
+        this.toUserId = toUserId;
+        this.message = message;
+        this.fromUserId = fromUserId;
+        this.fromUserName = fromUserName;
     }
 
     @Override
