@@ -7,9 +7,15 @@
     <groupId>com.youbaaa</groupId>
     <artifactId>im</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <packaging>pom</packaging>
     <name>netty-im</name>
     <description>基于netty实现即时通讯功能</description>
+    <modules>
+        <module>common</module>
+        <module>protocol</module>
+        <module>server</module>
+        <module>client</module>
+    </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -17,42 +23,37 @@
         <netty-all.version>4.1.42.Final</netty-all.version>
         <fastjson.version>1.2.73</fastjson.version>
         <lombok.version>1.18.12</lombok.version>
-<!--        <slf4j-api.version>2.0.0-alpha1</slf4j-api.version>-->
+        <im.common.version>0.0.1-SNAPSHOT</im.common.version>
+        <im.protocol.version>0.0.1-SNAPSHOT</im.protocol.version>
+        <!--        <slf4j-api.version>2.0.0-alpha1</slf4j-api.version>-->
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>${netty-all.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-api</artifactId>-->
-<!--            <version>${slf4j-api.version}</version>-->
-<!--        </dependency>-->
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty-all.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.youbaaa.im</groupId>
+                <artifactId>common</artifactId>
+                <version>${im.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.youbaaa.im</groupId>
+                <artifactId>protocol</artifactId>
+                <version>${im.protocol.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
